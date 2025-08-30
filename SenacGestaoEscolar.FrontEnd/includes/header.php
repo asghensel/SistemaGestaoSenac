@@ -1,5 +1,5 @@
 <?php
-// Inicia a sessão APENAS se ela ainda não estiver ativa
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }

@@ -1,15 +1,14 @@
 <?php
-// Pega o ID do professor que foi passado na URL
+
 $professorId = $_GET['id'] ?? 0;
 
 if ($professorId <= 0) {
     die("Erro: ID do professor não fornecido ou inválido.");
 }
 
-// Monta a URL do endpoint da sua API
 $url = "https://localhost:7017/api/Professor/" . $professorId . "/Obter_Professor";
 
-// Faz a chamada para a API (cURL)
+
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

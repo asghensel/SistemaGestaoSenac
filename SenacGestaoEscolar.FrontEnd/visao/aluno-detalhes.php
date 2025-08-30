@@ -1,13 +1,12 @@
 <?php
-// Pega o ID do aluno que foi passado na URL. Ex: aluno-detalhes.php?id=2
 $alunoId = $_GET['id'] ?? 0;
 
-// Validação básica para garantir que um ID foi passado
+
 if ($alunoId <= 0) {
     die("Erro: ID do aluno não fornecido ou inválido.");
 }
 
-// Monta a URL do endpoint da sua API, usando o ID dinâmico
+
 $url = "https://localhost:7017/api/Aluno/" . $alunoId . "/Obter_Aluno";
 
 $ch = curl_init($url);

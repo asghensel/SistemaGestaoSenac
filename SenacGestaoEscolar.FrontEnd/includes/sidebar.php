@@ -23,11 +23,11 @@
         }
 
         .fade-in-element {
-            opacity: 0; /* Começa invisível */
+            opacity: 0; 
             animation: fadeIn 0.8s ease-out forwards;
         }
 
-        /* --- Barra Lateral (Sidebar) --- */
+      
         .sidebar {
             position: fixed;
             top: 0;
@@ -40,7 +40,7 @@
             display: flex;
             flex-direction: column;
             box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-            animation-delay: 0.2s; /* Atraso para a animação da sidebar */
+            animation-delay: 0.2s; 
         }
 
         .sidebar .logo {
@@ -60,7 +60,7 @@
 
         .sidebar .nav-link i {
             margin-right: 1rem;
-            width: 20px; /* Alinha os ícones */
+            width: 20px;
             text-align: center;
         }
 
@@ -76,7 +76,7 @@
         }
 
         .sidebar .user-info {
-            margin-top: auto; /* Empurra para o final */
+            margin-top: auto;
             font-weight: 600;
         }
  </style>

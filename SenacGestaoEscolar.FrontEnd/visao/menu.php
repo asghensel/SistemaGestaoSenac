@@ -22,7 +22,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        /* --- Animação de Fade-in --- */
+       
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -35,13 +35,11 @@
         }
 
         .fade-in-element {
-            opacity: 0; /* Começa invisível */
+            opacity: 0; 
             animation: fadeIn 0.8s ease-out forwards;
         }
 
-        /* --- Barra Lateral (Sidebar) --- */
-            
-        /* --- Conteúdo Principal --- */
+      
         .main-content {
          
             padding: 2rem 3rem;
@@ -97,7 +95,7 @@
         .card-alunos { background-color: var(--card-alunos); }
         .card-cursos { background-color: var(--card-cursos); }
         
-        /* --- Responsividade --- */
+    
         @media (max-width: 992px) {
             .sidebar {
                 position: static;

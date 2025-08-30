@@ -2,7 +2,7 @@
 $cursoId = $_GET['id'] ?? 0;
 if ($cursoId <= 0) die("Erro: ID do curso inválido.");
 
-// Faz a chamada para a API para buscar os detalhes do curso
+
 $url = "https://localhost:7017/api/Curso/" . $cursoId . "/Obter_Curso";
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

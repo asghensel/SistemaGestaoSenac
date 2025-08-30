@@ -1,27 +1,24 @@
-// Define a URL base da sua API .NET para Professores
+
 const API_URL = "https://localhost:7017/api/Professor";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- SELEÇÃO DE ELEMENTOS ---
+  
     const tabelaCorpo = document.getElementById('tabela-professores-corpo');
     const inputPesquisa = document.getElementById('pesquisar-professor');
     const paginacaoContainer = document.getElementById('paginacao-container');
     const btnCadastrar = document.getElementById('btnCadastrarProfessor');
     
-    // Instâncias dos modais do Bootstrap
+   
     const cadastrarModal = new bootstrap.Modal(document.getElementById('cadastrarProfessorModal'));
     const editarModal = new bootstrap.Modal(document.getElementById('editarProfessorModal'));
 
-    // --- VARIÁVEIS DE ESTADO ---
+
     let todosOsProfessores = [];
     let paginaAtual = 1;
     const limitePorPagina = 10;
 
-    // --- FUNÇÕES ---
+    
 
-    /**
-     * Renderiza (desenha) as linhas da tabela com base em uma lista de professores.
-     */
     function renderizarTabela(professores) {
         tabelaCorpo.innerHTML = '';
         if (professores.length === 0) {
@@ -47,9 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Busca os professores da API de forma paginada.
-     */
     async function carregarProfessores(pagina = 1) {
         try {
             const response = await fetch(`${API_URL}/Obter_Todos?pagina=${pagina}&limite=${limitePorPagina}`);
@@ -65,9 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Renderiza os botões de controle da paginação.
-     */
+    
     function renderizarPaginacao(pagAtual, totalPaginas) {
         paginacaoContainer.innerHTML = '';
         if (totalPaginas <= 1) return;
@@ -84,9 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
         paginacaoContainer.appendChild(ul);
     }
 
-    /**
-     * Envia os dados do formulário de cadastro para a API.
-     */
     async function cadastrarProfessor() {
         const nome = document.getElementById('nome').value.trim();
         const sobrenome = document.getElementById('sobrenome').value.trim();
@@ -117,9 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Busca dados de um professor e abre o modal de edição.
-     */
+    
+  
     async function abrirModalEdicao(id) {
         try {
             const response = await fetch(`${API_URL}/${id}/Obter_Professor`);
@@ -140,9 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Envia os dados atualizados do formulário de edição para a API.
-     */
+   
     async function salvarAlteracoes() {
         const id = document.getElementById('editProfessorId').value;
         const email = document.getElementById('editEmail').value.trim();
@@ -170,9 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Deleta um professor após confirmação.
-     */
+    
     function deletarProfessor(id) {
         Swal.fire({
             title: 'Você tem certeza?', text: "Esta ação não pode ser revertida!", icon: 'warning',
@@ -201,7 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- EVENT LISTENERS (BLOCO COMPLETO E FUNCIONAL) ---
     
     btnCadastrar.addEventListener('click', cadastrarProfessor);
     
@@ -239,6 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- CARGA INICIAL ---
+ 
     carregarProfessores(paginaAtual);
 });
