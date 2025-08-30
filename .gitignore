@@ -1,0 +1,68 @@
+# Arquivo .gitignore Padrão para Soluções .NET (Visual Studio)
+
+## Pastas de Compilação e Build (O mais importante)
+# Ignora os resultados da compilação, que são gerados a cada vez
+[Bb]in/
+[Oo]bj/
+
+## Arquivos de Configuração do Usuário e da IDE
+# Ignora configurações específicas do seu Visual Studio ou de outros editores
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider/JetBrains
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+# Exceção: Descomente as linhas abaixo se você quiser compartilhar
+# configurações de debug e tarefas com sua equipe.
+#!.vscode/launch.json
+#!.vscode/tasks.json
+#!.vscode/extensions.json
+
+
+## Segredos e Configurações de Desenvolvimento
+# NUNCA envie seus segredos para o repositório!
+appsettings.Development.json
+secrets.json
+*.secrets.json
+
+# Se você tem um arquivo de variáveis de ambiente
+.env
+
+
+## Pacotes NuGet e Dependências
+# Pastas de pacotes antigas e cache
+packages/
+*.nupkg
+
+# Se você usar dependências de frontend (npm, yarn)
+node_modules/
+npm-debug.log*
+yarn-error.log
+
+
+## Resultados de Testes e Logs
+TestResults/
+*.log
+*.log.*
+*.DS_Store
+*.DotSettings.user
+
+
+## Arquivos de Certificados e Chaves
+# Ignora certificados de segurança locais
+*.pfx
+*.key
+*.cer
+
+
+## Arquivos Gerados pelo Sistema Operacional
+# Arquivos de thumbnail do Windows e macOS
+Thumbs.db
+._*

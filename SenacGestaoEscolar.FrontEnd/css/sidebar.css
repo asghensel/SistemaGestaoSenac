@@ -1,0 +1,68 @@
+@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-element {
+            opacity: 0; /* Começa invisível */
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* --- Barra Lateral (Sidebar) --- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 1.5rem 1rem;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            animation-delay: 0.2s; /* Atraso para a animação da sidebar */
+        }
+
+        .sidebar .logo {
+            max-width: 150px;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar .nav-link {
+            color: #d1d1d1;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 1rem;
+            width: 20px; /* Alinha os ícones */
+            text-align: center;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .sidebar .user-info {
+            margin-top: auto; /* Empurra para o final */
+            font-weight: 600;
+        }
