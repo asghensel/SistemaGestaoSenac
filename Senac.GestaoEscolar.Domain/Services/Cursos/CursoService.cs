@@ -45,7 +45,7 @@ namespace Senac.GestaoEscolar.Domain.Services.Cursos
                 Descricao = cadastrarCursoRequest.Descricao,
                 Categoria = categoria,
                 Valor = cadastrarCursoRequest.Valor,
-                DataCriacao = cadastrarCursoRequest.DataCriacao,
+                DataCriacao = DateTime.Now,
                 CargaHoraria = cadastrarCursoRequest.CargaHoraria,
                 Ativo = cadastrarCursoRequest.Ativo,
                 ProfessorId = cadastrarCursoRequest.ProfessorId

@@ -1,34 +1,57 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Senac.GestaoEscolar.Domain.Repositories.Alunos;
 using Senac.GestaoEscolar.Domain.Repositories.Cursos;
 using Senac.GestaoEscolar.Domain.Repositories.Professores;
+using Senac.GestaoEscolar.Domain.Repositories.Matriculas;
 using Senac.GestaoEscolar.Domain.Services.Alunos;
 using Senac.GestaoEscolar.Domain.Services.Cursos;
 using Senac.GestaoEscolar.Domain.Services.Professoras;
+using Senac.GestaoEscolar.Domain.Services.Matriculas;
 using Senac.GestaoEscolar.Infra.Data.DataBaseConfigurations;
 using Senac.GestaoEscolar.Infra.Data.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.OpenApi.Models;
+using Senac.GestaoEscolar.Domain.Services.Professoras;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddScoped<IDbConnectionFactory>(x =>
+
+var nomeDaPoliticaDeCors = "PermitirFrontend";
+builder.Services.AddCors(options =>
 {
-    return new DbConnectionFactory("Server=(localdb)\\MSSQLLocalDB;Database=gerenciamento_escolar; Trusted_connection=True;");
+    options.AddPolicy(name: nomeDaPoliticaDeCors,
+        policy =>
+        {
+            
+            policy.WithOrigins("http://localhost:8080", "http://127.0.0.1:5500")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddScoped<IDbConnectionFactory>(x =>
+    new DbConnectionFactory(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
 builder.Services.AddScoped<IAlunoRepository, AlunoRepository>();
 builder.Services.AddScoped<IAlunoService, AlunoService>();
-builder.Services.AddScoped<ICursoService, CursoService>();
-builder.Services.AddScoped<ICursoRepository, CursoRepository>();
-builder.Services.AddScoped<IProfessorService, ProfessorService>();
+
 builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
+builder.Services.AddScoped<IProfessorService, ProfessorService>();
+
+builder.Services.AddScoped<ICursoRepository, CursoRepository>();
+builder.Services.AddScoped<ICursoService, CursoService>();
+
+
+builder.Services.AddScoped<IMatriculaRepository, MatriculaRepository>();
+builder.Services.AddScoped<IMatriculaService, MatriculaService>();
+
+builder.Services.AddEndpointsApiExplorer();
+
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -41,7 +64,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Insira o token JWT no formato: {seu_token}"
+        Description = "Insira 'Bearer ' seguido pelo seu token JWT. Exemplo: Bearer {seu_token}"
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -49,11 +72,7 @@ builder.Services.AddSwaggerGen(c =>
         {
             new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
             },
             Array.Empty<string>()
         }
@@ -69,41 +88,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://identityserver-api.onrender.com",
-            ValidAudience = "https://identityserver-api.onrender.com",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("V3ry$3cr3tK3y!Sh0uldB3Long&Random"))
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
 
 builder.Services.AddAuthorization();
-// Configura a política de CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("PermitirFrontend",
-        policy =>
-        {
-            policy.WithOrigins("http://127.0.0.1:5500") // origem do teu Live Server
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
-});
 
 var app = builder.Build();
 
-app.UseCors("PermitirFrontend");
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
-
+app.UseCors(nomeDaPoliticaDeCors);
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

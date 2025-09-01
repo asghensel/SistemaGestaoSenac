@@ -10,7 +10,7 @@ namespace Senac.GestaoEscolar.API.Controllers
    
         [ApiController]
         [Route("api/[controller]")]
-        [Authorize]
+        
         public class ProfessorController : Controller
         {
             private readonly IProfessorService _professorService;

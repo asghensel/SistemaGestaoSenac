@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Senac.GestaoEscolar.Domain.Dtos.Request.Alunos;
 using Senac.GestaoEscolar.Domain.Dtos.Response;
 using Senac.GestaoEscolar.Domain.Services.Alunos;
-using Microsoft.AspNetCore.Authorization;
-
+using Senac.GestaoEscolar.Domain.Dtos.Response.Alunos;
+using System;
 namespace Senac.GestaoEscolar.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    
     public class AlunoController : Controller
     {
         private readonly IAlunoService _alunoService;

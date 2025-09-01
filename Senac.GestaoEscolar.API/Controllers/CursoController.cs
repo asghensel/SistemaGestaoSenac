@@ -9,7 +9,7 @@ namespace Senac.GestaoEscolar.API.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    
 
     public class CursoController : Controller
     {

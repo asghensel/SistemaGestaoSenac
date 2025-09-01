@@ -1,20 +1,24 @@
-
+// Define a URL base da sua API .NET
 const API_URL = "https://localhost:7017/api/Aluno";
 
 document.addEventListener('DOMContentLoaded', () => {
-   
+    // --- SELEÇÃO DE ELEMENTOS ---
     const tabelaCorpo = document.getElementById('tabela-alunos-corpo');
     const inputPesquisa = document.getElementById('pesquisar-aluno');
     const btnCadastrar = document.getElementById('btnCadastrar');
 
-
+    // Modais
     const cadastrarModal = new bootstrap.Modal(document.getElementById('cadastrarModal'));
     const editarModal = new bootstrap.Modal(document.getElementById('editarModal'));
 
-   
+    // --- VARIÁVEL PARA GUARDAR OS DADOS ---
     let todosOsAlunos = []; 
 
+    // --- FUNÇÕES ---
 
+    /**
+     * Função dedicada a renderizar a tabela com uma lista de alunos.
+     */
     function renderizarTabela(alunos) {
         tabelaCorpo.innerHTML = ''; 
 
@@ -40,7 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+    /**
+     * Busca os alunos na API, guarda na variável principal e chama a renderização.
+     */
     async function carregarAlunos() {
         try {
             const response = await fetch(`${API_URL}/Obter_Todos`);
@@ -166,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- EVENT LISTENERS ---
 
     btnCadastrar.addEventListener('click', cadastrarAluno);
     document.getElementById('btnSalvarEdicao').addEventListener('click', salvarAlteracoes);

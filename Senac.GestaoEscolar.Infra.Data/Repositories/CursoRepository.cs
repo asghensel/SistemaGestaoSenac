@@ -42,12 +42,12 @@ namespace Senac.GestaoEscolar.Infra.Data.Repositories
                 INSERT INTO Curso ( 
                     nome, 
                     descricao,
-                    dataCriacao
+                    dataCriacao,
                     cargaHoraria,
                     categoria,
                     valor,
                     ativo,  
-                    professorId,
+                    professorId
                     )
                     OUTPUT INSERTED.Id      
                 VALUES (

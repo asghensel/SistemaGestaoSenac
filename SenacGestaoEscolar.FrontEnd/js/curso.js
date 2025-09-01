@@ -2,7 +2,7 @@ const API_CURSO_URL = "https://localhost:7017/api/Curso";
 const API_PROFESSOR_URL = "https://localhost:7017/api/Professor";
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+    // --- SELEÇÃO DE ELEMENTOS ---
     const tabelaCorpo = document.getElementById('tabela-cursos-corpo');
     const inputPesquisa = document.getElementById('pesquisar-curso');
     const paginacaoContainer = document.getElementById('paginacao-container');
@@ -12,12 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const editarModalEl = document.getElementById('editarCursoModal');
     const editarModal = new bootstrap.Modal(editarModalEl);
 
-    
+    // --- VARIÁVEIS DE ESTADO ---
     let todosOsCursos = [];
     let paginaAtual = 1;
     const limitePorPagina = 10;
 
-   
+    // --- FUNÇÕES ---
 
     function renderizarTabela(cursos) {
         tabelaCorpo.innerHTML = '';
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const option = document.createElement('option');
                 option.value = prof.id;
                 option.textContent = `${prof.nome} ${prof.sobrenome}`;
-                if (prof.id == selectedProfessorId) { 
+                if (prof.id == selectedProfessorId) { // Usar '==' para comparar string com número
                     option.selected = true;
                 }
                 selectProfessor.appendChild(option);
@@ -216,8 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 }
-
-   
+    // --- EVENT LISTENERS ---
     document.getElementById('btnCadastrarCurso').addEventListener('click', cadastrarCurso);
     document.getElementById('btnSalvarEdicaoCurso').addEventListener('click', salvarAlteracoes);
     cadastrarModalEl.addEventListener('show.bs.modal', () => carregarProfessoresNoModal('professorId'));
@@ -252,6 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-   
+    // --- CARGA INICIAL ---
     carregarCursos(paginaAtual);
 });

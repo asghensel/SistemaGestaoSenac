@@ -1,7 +1,7 @@
 USE [gerenciamento_escolar]
 GO
 
-/****** Object:  Table [dbo].[Administradores]    Script Date: 29/08/2025 22:10:11 ******/
+
 SET ANSI_NULLS ON
 GO
 
@@ -29,7 +29,7 @@ GO
 USE [gerenciamento_escolar]
 GO
 
-/****** Object:  Table [dbo].[Aluno]    Script Date: 29/08/2025 22:10:27 ******/
+
 SET ANSI_NULLS ON
 GO
 
@@ -55,7 +55,7 @@ GO
 USE [gerenciamento_escolar]
 GO
 
-/****** Object:  Table [dbo].[Categoria]    Script Date: 29/08/2025 22:10:35 ******/
+
 SET ANSI_NULLS ON
 GO
 
@@ -75,7 +75,7 @@ GO
 USE [gerenciamento_escolar]
 GO
 
-/****** Object:  Table [dbo].[Curso]    Script Date: 29/08/2025 22:10:42 ******/
+
 SET ANSI_NULLS ON
 GO
 
@@ -106,7 +106,7 @@ GO
 USE [gerenciamento_escolar]
 GO
 
-/****** Object:  Table [dbo].[Formacao]    Script Date: 29/08/2025 22:10:50 ******/
+
 SET ANSI_NULLS ON
 GO
 
@@ -126,7 +126,7 @@ GO
 USE [gerenciamento_escolar]
 GO
 
-/****** Object:  Table [dbo].[Professor]    Script Date: 29/08/2025 22:10:59 ******/
+
 SET ANSI_NULLS ON
 GO
 
@@ -150,3 +150,11 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 GO
 
+CREATE TABLE Matriculas (
+    AlunoId BIGINT NOT NULL,
+    CursoId BIGINT NOT NULL,
+    DataMatricula DATETIME NOT NULL,
+    PRIMARY KEY (AlunoId, CursoId), 
+    FOREIGN KEY (AlunoId) REFERENCES Aluno(Id),
+    FOREIGN KEY (CursoId) REFERENCES Curso(Id)
+);
