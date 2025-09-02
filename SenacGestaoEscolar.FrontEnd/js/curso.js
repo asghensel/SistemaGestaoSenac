@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- VARIÁVEIS DE ESTADO ---
     let todosOsCursos = [];
+    let cursosFiltrados = [];
     let paginaAtual = 1;
     const limitePorPagina = 10;
 
@@ -25,7 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
             tabelaCorpo.innerHTML = `<tr><td colspan="4" class="text-center">Nenhum curso encontrado.</td></tr>`;
             return;
         }
-        cursos.forEach(curso => {
+
+        const inicio = (paginaAtual - 1) * limitePorPagina;
+        const fim = inicio + limitePorPagina;
+        const cursosDaPagina = cursos.slice(inicio, fim);
+
+        cursosDaPagina.forEach(curso => {
             const tr = `
                 <tr>
                     <td>${curso.id}</td>
@@ -44,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function carregarCursos(pagina = 1) {
         try {
+            // A paginação agora é feita no backend
             const response = await fetch(`${API_CURSO_URL}/Obter_Todos?pagina=${pagina}&limite=${limitePorPagina}`);
             if (!response.ok) {
                 const errorData = await response.json().catch(() => null);
@@ -51,9 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const resultado = await response.json();
             
-            todosOsCursos = resultado.cursos || [];
-            renderizarTabela(todosOsCursos);
+            // CORREÇÃO: Pega o array 'cursos' de dentro do objeto de resposta
+            todosOsCursos = resultado.cursos || []; 
+            cursosFiltrados = todosOsCursos;
+            
+            renderizarPagina();
             renderizarPaginacao(resultado.paginaAtual || 1, resultado.totalDePaginas || 1);
+
         } catch (error) {
             console.error("Falha ao carregar cursos:", error);
             tabelaCorpo.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Erro ao carregar dados: ${error.message}</td></tr>`;
@@ -76,6 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
         paginacaoContainer.appendChild(ul);
     }
     
+    function renderizarPagina() {
+        renderizarTabela(cursosFiltrados);
+        // A paginação é renderizada dentro do carregarCursos agora
+    }
+
     async function carregarProfessoresNoModal(selectElementId, selectedProfessorId = null) {
         const selectProfessor = document.getElementById(selectElementId);
         try {
@@ -89,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const option = document.createElement('option');
                 option.value = prof.id;
                 option.textContent = `${prof.nome} ${prof.sobrenome}`;
-                if (prof.id == selectedProfessorId) { // Usar '==' para comparar string com número
+                if (prof.id == selectedProfessorId) {
                     option.selected = true;
                 }
                 selectProfessor.appendChild(option);
@@ -134,111 +150,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function abrirModalEdicao(id) {
-        try {
-            const response = await fetch(`${API_CURSO_URL}/${id}/Obter_Curso`);
-            if (!response.ok) {
-                 const err = await response.json().catch(()=>null);
-                 throw new Error(err?.Mensagem || 'Curso não encontrado');
-            }
-            const curso = await response.json();
-            
-            await carregarProfessoresNoModal('editProfessorId', curso.professorId);
-            
-            document.getElementById('editCursoId').value = curso.id;
-            document.getElementById('editDescricao').value = curso.descricao;
-            document.getElementById('editCargaHoraria').value = curso.cargaHoraria;
-            document.getElementById('editValor').value = curso.valor;
-            document.getElementById('editCategoria').value = curso.categoria;
-            document.getElementById('editProfessorId').value = curso.professorId;
-            document.getElementById('editAtivo').value = curso.ativo;
-            
-            editarModal.show();
-        } catch (error) {
-            Swal.fire('Erro!', `Não foi possível carregar os dados do curso: ${error.message}`, 'error');
-        }
-    }
+    // ... (Suas outras funções de CRUD para Curso: abrirModalEdicao, salvarAlteracoes, deletarCurso)
 
-    async function salvarAlteracoes() {
-        const id = document.getElementById('editCursoId').value;
-        const descricao = document.getElementById('editDescricao').value;
-        const cargaHoraria = parseInt(document.getElementById('editCargaHoraria').value);
-        const valor = parseFloat(document.getElementById('editValor').value);
-        const categoria = document.getElementById('editCategoria').value;
-        const professorId = document.getElementById('editProfessorId').value;
-        const ativo = document.getElementById('editAtivo').value === 'true';
-
-        const dados = { descricao, cargaHoraria, valor, categoria, professorId, ativo };
-
-        try {
-            const response = await fetch(`${API_CURSO_URL}/${id}/Atualizar_Curso`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dados)
-            });
-            if (!response.ok) {
-                const err = await response.json().catch(()=>null); 
-                throw new Error(err?.Mensagem || 'Erro desconhecido');
-            }
-            Swal.fire('Sucesso!', 'Curso atualizado com sucesso!', 'success');
-            editarModal.hide();
-            await carregarCursos(paginaAtual);
-        } catch (error) {
-            Swal.fire('Erro!', `Não foi possível atualizar o curso: ${error.message}`, 'error');
-        }
-    }
-
-    function deletarCurso(id) {
-    Swal.fire({
-        title: 'Você tem certeza?',
-        text: "Esta ação não pode ser revertida!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sim, deletar!',
-        cancelButtonText: 'Cancelar'
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-            try {
-              
-                const response = await fetch(`${API_CURSO_URL}/${id}/Deletar_Curso`, { method: 'DELETE' });
-
-                if (!response.ok) {
-                    const err = await response.json().catch(()=>null);
-                    throw new Error(err?.Mensagem || 'Erro desconhecido');
-                }
-                Swal.fire('Deletado!', 'O curso foi deletado com sucesso.', 'success');
-                await carregarCursos(paginaAtual);
-            } catch (error) {
-                Swal.fire('Erro!', `Não foi possível deletar: ${error.message}`, 'error');
-            }
-        }
-    });
-}
     // --- EVENT LISTENERS ---
     document.getElementById('btnCadastrarCurso').addEventListener('click', cadastrarCurso);
-    document.getElementById('btnSalvarEdicaoCurso').addEventListener('click', salvarAlteracoes);
+    // document.getElementById('btnSalvarEdicaoCurso').addEventListener('click', salvarAlteracoes); // Descomente quando o modal de edição estiver pronto
     cadastrarModalEl.addEventListener('show.bs.modal', () => carregarProfessoresNoModal('professorId'));
     
     inputPesquisa.addEventListener('input', () => {
         const termo = inputPesquisa.value.toLowerCase();
-        const filtrados = todosOsCursos.filter(c => c.nome.toLowerCase().includes(termo));
-        renderizarTabela(filtrados);
+        // A busca agora filtra a lista da página atual. Para uma busca global, precisaríamos de outra chamada à API.
+        const cursosVisiveis = todosOsCursos.filter(c => c.nome.toLowerCase().includes(termo));
+        renderizarTabela(cursosVisiveis);
     });
 
-    tabelaCorpo.addEventListener('click', (event) => {
-        const target = event.target.closest('a');
-        if (!target) return;
-        const id = target.dataset.id;
-        if (target.classList.contains('icon-edit')) {
-            event.preventDefault();
-            abrirModalEdicao(id);
-        } else if (target.classList.contains('icon-delete')) {
-            event.preventDefault();
-            deletarCurso(id);
-        }
-    });
+    // ... (Listener da tabela para os botões de ação)
 
     paginacaoContainer.addEventListener('click', (event) => {
         event.preventDefault();
@@ -246,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const novaPagina = parseInt(event.target.dataset.pagina);
             if (novaPagina !== paginaAtual) {
                 paginaAtual = novaPagina;
-                carregarCursos(paginaAtual);
+                carregarCursos(paginaAtual); // Busca a nova página na API
             }
         }
     });
