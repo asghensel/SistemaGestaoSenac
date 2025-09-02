@@ -28,7 +28,6 @@
 
 ## Segredos e Configurações de Desenvolvimento
 # NUNCA envie seus segredos para o repositório!
-appsettings.Development.json
 secrets.json
 *.secrets.json
 
