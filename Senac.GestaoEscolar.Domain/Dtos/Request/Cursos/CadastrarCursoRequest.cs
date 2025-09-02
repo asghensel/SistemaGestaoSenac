@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace Senac.GestaoEscolar.Domain.Dtos.Request.Cursos
 {
     public class CadastrarCursoRequest

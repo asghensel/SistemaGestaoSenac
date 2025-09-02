@@ -2,59 +2,51 @@
 using Senac.GestaoEscolar.Domain.Dtos.Request.Cursos;
 using Senac.GestaoEscolar.Domain.Dtos.Response;
 using Senac.GestaoEscolar.Domain.Services.Cursos;
-using Microsoft.AspNetCore.Authorization;
+using System;
+using System.Threading.Tasks;
 
 namespace Senac.GestaoEscolar.API.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
-    
-
     public class CursoController : Controller
     {
         private readonly ICursoService _cursoService;
+
         public CursoController(ICursoService cursoService)
         {
             _cursoService = cursoService;
         }
+
         [HttpGet("Obter_Todos")]
-        public async Task<IActionResult> ObterTodosCursos()
+        public async Task<IActionResult> ObterTodosCursos([FromQuery] int pagina = 1, [FromQuery] int limite = 10)
         {
             try
             {
-                var cursosResponse = await _cursoService.ObterTodosCursos();
-                return Ok(cursosResponse);
+                // Garante que os valores de paginação sejam válidos
+                if (pagina < 1) pagina = 1;
+                if (limite < 1) limite = 10;
+
+                var response = await _cursoService.ObterTodosCursos(pagina, limite);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                var response = new ErroResponse
-                {
-                    Mensagem = ex.Message
-                };
-                return NotFound(response);
+                return BadRequest(new ErroResponse { Mensagem = ex.Message });
             }
         }
 
-        [HttpGet("{id}Obter_Curso")]
+        [HttpGet("{id}/Obter_Curso")]
         public async Task<IActionResult> ObterCurso([FromRoute] long id)
         {
             try
             {
-                var cursoResponse = await _cursoService.ObterCurso(id);
-                if (cursoResponse == null)
-                {
-                    return NotFound(new ErroResponse { Mensagem = "Curso não encontrado." });
-                }
-                return Ok(cursoResponse);
+                var response = await _cursoService.ObterCurso(id);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                var response = new ErroResponse
-                {
-                    Mensagem = ex.Message
-                };
-                return NotFound(response);
+                return NotFound(new ErroResponse { Mensagem = ex.Message });
             }
         }
 
@@ -63,20 +55,16 @@ namespace Senac.GestaoEscolar.API.Controllers
         {
             try
             {
-                var cadastrarCursoResponse = await _cursoService.CadastrarCurso(cadastrarCursoRequest);
-                return Ok(cadastrarCursoResponse);
+                var response = await _cursoService.CadastrarCurso(cadastrarCursoRequest);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                var response = new ErroResponse
-                {
-                    Mensagem = ex.Message
-                };
-                return BadRequest(response);
+                return BadRequest(new ErroResponse { Mensagem = ex.Message });
             }
         }
 
-        [HttpPatch("{id}Atualizar_Curso")]
+        [HttpPatch("{id}/Atualizar_Curso")]
         public async Task<IActionResult> AtualizarCurso([FromRoute] long id, [FromBody] AtualizarCursoRequest atualizarCursoRequest)
         {
             try
@@ -86,15 +74,11 @@ namespace Senac.GestaoEscolar.API.Controllers
             }
             catch (Exception ex)
             {
-                var response = new ErroResponse
-                {
-                    Mensagem = ex.Message
-                };
-                return BadRequest(response);
+                return BadRequest(new ErroResponse { Mensagem = ex.Message });
             }
         }
 
-        [HttpDelete("{id}Deletar_Curso")]
+        [HttpDelete("{id}/Deletar_Curso")]
         public async Task<IActionResult> DeletarCurso([FromRoute] long id)
         {
             try
@@ -104,11 +88,7 @@ namespace Senac.GestaoEscolar.API.Controllers
             }
             catch (Exception ex)
             {
-                var response = new ErroResponse
-                {
-                    Mensagem = ex.Message
-                };
-                return BadRequest(response);
+                return BadRequest(new ErroResponse { Mensagem = ex.Message });
             }
         }
     }

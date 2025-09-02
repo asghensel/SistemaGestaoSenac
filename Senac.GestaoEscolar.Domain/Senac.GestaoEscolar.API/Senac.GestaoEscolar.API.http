@@ -1,0 +1,6 @@
+@Senac.GestaoEscolar.API_HostAddress = http://localhost:5053
+
+GET {{Senac.GestaoEscolar.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -17,6 +17,7 @@ namespace Senac.GestaoEscolar.Domain.Services.Matriculas
         private readonly IAlunoRepository _alunoRepository;
         private readonly ICursoRepository _cursoRepository;
 
+        // Injetamos os repositórios de Aluno e Curso para validar os IDs
         public MatriculaService(IMatriculaRepository matriculaRepository, IAlunoRepository alunoRepository, ICursoRepository cursoRepository)
         {
             _matriculaRepository = matriculaRepository;
@@ -26,23 +27,24 @@ namespace Senac.GestaoEscolar.Domain.Services.Matriculas
 
         public async Task<IEnumerable<MatriculaResponse>> ObterCursosPorAlunoIdAsync(long alunoId)
         {
-            var matriculas = await _matriculaRepository.ObterCursosPorAlunoIdAsync(alunoId);
+            var matriculas = await _matriculaRepository.ObterPorAlunoIdAsync(alunoId);
             return matriculas.Select(m => new MatriculaResponse { CursoId = m.CursoId, DataMatricula = m.DataMatricula });
         }
 
         public async Task MatricularAsync(MatricularRequest request)
         {
-            // Validações
+        
             var aluno = await _alunoRepository.ObterAluno(request.AlunoId);
             if (aluno == null) throw new Exception("Aluno não encontrado.");
 
+           
             var curso = await _cursoRepository.ObterCurso(request.CursoId);
             if (curso == null) throw new Exception("Curso não encontrado.");
 
             var matriculaExistente = await _matriculaRepository.ObterPorAlunoECursoAsync(request.AlunoId, request.CursoId);
             if (matriculaExistente != null) throw new Exception("Aluno já está matriculado neste curso.");
 
-            // Cria a nova matrícula
+            
             var novaMatricula = new Matricula
             {
                 AlunoId = request.AlunoId,

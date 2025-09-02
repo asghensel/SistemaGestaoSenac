@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Senac.GestaoEscolar.Domain.Dtos.Request.Alunos;
 using Senac.GestaoEscolar.Domain.Dtos.Response;
 using Senac.GestaoEscolar.Domain.Services.Alunos;
-using Senac.GestaoEscolar.Domain.Dtos.Response.Alunos;
-using System;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Senac.GestaoEscolar.API.Controllers
 {
     [ApiController]
@@ -33,7 +34,7 @@ namespace Senac.GestaoEscolar.API.Controllers
             }
         }
 
-        [HttpGet("{id}Obter_Aluno")]
+        [HttpGet("{id}/Obter_Aluno")]
         public async Task<IActionResult> ObterAluno([FromRoute] long id)
         {
             try
@@ -73,7 +74,7 @@ namespace Senac.GestaoEscolar.API.Controllers
             }
         }
 
-        [HttpPatch("{id}Atualizar_Aluno")]
+        [HttpPatch("{id}/Atualizar_Aluno")]
         public async Task<IActionResult> AtualizarAluno([FromRoute] long id, [FromBody] AtualizarAlunoRequest atualizarAlunoRequest)
         {
             try
@@ -91,7 +92,7 @@ namespace Senac.GestaoEscolar.API.Controllers
             }
         }
 
-        [HttpDelete("{id}Deletar_Aluno")]
+        [HttpDelete("{id}/Deletar_Aluno")]
         public async Task<IActionResult> DeletarAluno([FromRoute] long id)
         {
             try

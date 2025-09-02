@@ -16,7 +16,7 @@ namespace Senac.GestaoEscolar.Infra.Data.Repositories
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<IEnumerable<Matricula>> ObterCursosPorAlunoIdAsync(long alunoId)
+        public async Task<IEnumerable<Matricula>> ObterPorAlunoIdAsync(long alunoId)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
