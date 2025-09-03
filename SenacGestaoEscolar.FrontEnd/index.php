@@ -20,17 +20,17 @@
     <div class="container-fluid full-height-container d-flex flex-column justify-content-center align-items-center text-center">
         
         <div class="mb-4">
-            <img src="./midia/logoBoi.png" alt="Logo Boizão School" class="img-fluid" style="max-width: 300px;">
+            <img src="./midia/logoBoizao.png" alt="Logo Boizão School" class="img-fluid" style="max-width: 300px;">
         </div>
 
-        
+        <h1 class="display-4 fw-bold text-dark mb-4">Boizão School</h1>
 
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link btn btn-outline-primary mx-2 my-1" href="paginas/professores.php">Gestãwrqqw de Professores</a>
+                            <a class="nav-link btn btn-outline-primary mx-2 my-1" href="paginas/professores.php">Gestão de Professores</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link btn btn-outline-primary mx-2 my-1" href="paginas/alunos.php">Gestão de Alunos</a>

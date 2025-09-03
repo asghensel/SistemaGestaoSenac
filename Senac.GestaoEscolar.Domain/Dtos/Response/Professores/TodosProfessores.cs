@@ -11,5 +11,6 @@ namespace Senac.GestaoEscolar.Domain.Dtos.Response.Professores
         public long Id { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
+        public string Graduacao { get; set; }   
     }
 }

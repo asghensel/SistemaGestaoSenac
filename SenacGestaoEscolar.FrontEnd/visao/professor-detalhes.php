@@ -59,5 +59,5 @@ include('../includes/sidebar.php');
 </main>
 
 <?php
-    include('../includes/footer.php'); // Pode usar o footer padrão aqui
+    include('../includes/footer.php'); 
 ?>

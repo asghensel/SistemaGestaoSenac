@@ -6,7 +6,7 @@ namespace Senac.GestaoEscolar.Domain.Repositories.Matriculas
 {
     public interface IMatriculaRepository
     {
-        Task<IEnumerable<Matricula>> ObterPorAlunoIdAsync(long alunoId);
+        Task<IEnumerable<Matricula>> ObterCursosPorAlunoIdAsync(long alunoId);
         Task<Matricula?> ObterPorAlunoECursoAsync(long alunoId, long cursoId);
         Task MatricularAsync(Matricula matricula);
     }

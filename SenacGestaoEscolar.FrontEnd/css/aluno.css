@@ -1,4 +1,4 @@
-/* ESTILOS DO CABEÇALHO DA PÁGINA */
+
 .page-header-container {
     width: 100%;
     background-color: #2D3E50;
@@ -21,7 +21,6 @@
     font-size: 1.1rem; font-weight: 400; opacity: 0.9; color: #FFFFFF;
 }
 
-/* ESTILOS GERAIS DA PÁGINA */
 .main-content {
     display: flex;
     flex-direction: column;
@@ -29,7 +28,7 @@
     padding: 0 2rem 2rem 2rem;
 }
 
-/* BARRA DE BUSCA */
+
 .search-bar {
     width: 100%;
     max-width: 800px;
@@ -51,7 +50,6 @@
     height: 50px;
 }
 
-/* TABELA */
 .table-responsive {
     width: 100%;
     max-width: 800px;
